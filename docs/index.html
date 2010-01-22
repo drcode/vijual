@@ -1,0 +1,110 @@
+<html>
+  <header>
+    <style type="text/css">
+      .fnbox {margin:40px;padding:40px;border-width: 1; border: solid;}
+      }
+    </style>
+  </header>
+  <body>
+    <small>Last Updated 1/22/2010 - Maintained By Conrad Barski.</small>
+    <h1><i>Vijual</i> Graph Layout Library For Clojure</h1>
+  <p><i>Vijual</i> is a graph layout engine conceptually similar to <i>graphviz</i>. However, it uses different layout algorithms, creating graphs with a different aesthetic. <i>Vijual</i> uses specialized algorithms for optimal rendering of trees, binary trees, directed, and undirected graphs. Also, it has robust abilities for generating attractive ASCII graphs (as well as traditional bitmap graphs) making it well suited for debugging and exploratory programming directly from the Clojure REPL. <i>Vijual is still early in development. Many of the algorithms in this library still have room for significant improvement- Expect many changes to this library in the near future.</i></p>
+  <h2>Installation</h2>
+  <p><i>Vijual</i> is easy to install through the use of <a href="http://github.com/technomancy/leiningen">leiningen</a> and <a href="http://clojars.org/">clojars</a>. To learn how to use leiningen refer to the documentation available at the <a href="http://github.com/technomancy/leiningen">leiningen home page</a>. Then, simply include <font face="courier">[vijual "1.0.0-SNAPSHOT"]</font> as a dependency in your project.clj to include this library in your programs.</p>
+  <h2>Namespaces</h2>
+  <p>The <font face="courier">Vijual</font> namespace contains the layout code and ascii rendering pipeline. The <font face="courier">Vijual.Graphical</font> namespace draws in extra Java libraries to implement the bitmap image rendering pipeline.</p>
+  <h2>Documentation/Gallery</h2>
+  <div class="fnbox">
+  <b>draw-tree</b>- Draws a tree to the console.
+  <pre>
+    usage: (draw-tree tree)
+  </pre>
+  <img src="draw_tree.png"></img>
+  <br><br><br>
+  Large Example:
+  <br><br>
+  <a href="draw_tree_large.png"><img src="draw_tree_thumb.png"></img></a>
+  </div>
+  <div class="fnbox">
+  <b>draw-tree-image</b>- Draws a tree to a java Image. Returns a newly created image.
+  <pre>
+    usage: (draw-tree-image tree)
+  </pre>
+  <br>
+  <font face="courier">(draw-tree-image [[:north-america [:usa [:miami] [:seattle] [:idaho [:boise]]]] [:europe [:germany] [:france [:paris] [:lyon] [:cannes]]]])</font>
+  <br><br>
+  <img src="draw_tree_image.png"></img>
+  <br><br><br>
+  Large Example:
+  <br><br>
+  <a href="draw_tree_image_large.html"><img src="draw_tree_image_thumb.png"></img></a>
+  </div>
+  <div class="fnbox">
+  <b>draw-graph</b>- Draws an undirected graph to the console. Requires a list of pairs representing the edges of the graph. Additionally, a separate map can be included containing node information mapped via the node ids in the edge list.
+  <pre>
+    usage: (draw-graph edges) (draw-graph edges nodes)
+  </pre>
+  <img src="draw_graph.png"></img>
+  <br><br><br>
+  <img src="draw_graph_2.png"></img>
+  <br><br><br>
+  Large Example:
+  <br><br>
+  <a href="draw_graph_large.png"><img src="draw_graph_thumb.png"></img></a>
+  </div>
+  <div class="fnbox">
+  <b>draw-graph-image</b>- Draws an undirected graph to a java image. Requires a list of pairs representing the edges of the graph. Additionally, a separate map can be included containing node information mapped via the node ids in the edge list.
+  <pre>
+    usage: (draw-graph-image edges) (draw-graph-image edges nodes)
+  </pre>
+  <br>
+  <font face="courier">(draw-graph-image [[:a :b] [:b :c] [:c :d] [:a :d] [:e :f] [:a :f] [:g :e] [:d :e]])</font>
+  <br><br>
+  <img src="draw_graph_image.png"></img>
+  <br><br><br>
+  <font face="courier">(draw-graph-image [[:a :b] [:b :c] [:c :d] [:a :d] [:e :f] [:a :f] [:g :e] [:d :e]] {:a "Upper Floor" :b "Lower Floor" :c "Garden" :d "Stairway" :e "Front Yard" :f "Basement" :g "Walk Way"})</font>
+  <br><br>
+  <img src="draw_graph_2_image.png"></img>
+  <br><br><br>
+  Large Example:
+  <br><br>
+  <a href="draw_graph_image_large.html"><img src="draw_graph_image_thumb.png"></img></a>
+  </div>
+  <div class="fnbox">
+  <b>draw-directed-graph</b>- Draws an directed graph to the console. Requires a list of pairs representing the edges of the graph. Additionally, a separate map can be included containing node information mapped via the node ids in the edge list. An effort is made to have majority of 'arrows' in the graph move in a downward direction.
+  <pre>
+    usage: (draw-directed-graph edges) (draw-directed-graph edges nodes)
+  </pre>
+  <img src="draw_directed_graph.png"></img>
+  <br><br><br>
+  Large Example:
+  <br><br>
+  <a href="draw_directed_graph_large.png"><img src="draw_directed_graph_thumb.png"></img></a>
+  </div>
+  <div class="fnbox">
+  <b>draw-directed-graph-image</b>- Draws an directed graph to a java image. Requires a list of pairs representing the edges of the graph. Additionally, a separate map can be included containing node information mapped via the node ids in the edge list. An effort is made to have majority of 'arrows' in the graph move in a downward direction.
+  <pre>
+    usage: (draw-directed-graph-image edges) (draw-directed-graph-image edges nodes)
+  </pre>
+  <img src="draw_directed_graph_image.png"></img>
+  <br><br><br>
+  Large Example:
+  <br><br>
+  <a href="draw_directed_graph_image_large.html"><img src="draw_directed_graph_image_thumb.png"></img></a>
+  </div>
+  <div class="fnbox">
+    <b>draw-directional-acyclic-graph</b>- Draws a DAG to the console or to a bitmap. <i>This function is not yet implemented. When/if it becomes available, it will render a graph in a similar style to draw-tree, but allowing multiple parent links to children. It will be less space efficient than draw-directional-graph, but will have a clearer indication of hierarchy.</i>
+  </div>
+  <div class="fnbox">
+  <b>draw-binary-tree</b>- Draws a binary tree to the console. Nodes are in the form [text left right] where 'left' and 'right' are optional fields containing the children of this node.
+  <pre>
+    usage: (draw-binary-tree tree)
+  </pre>
+  <img src="draw_binary_tree.png"></img>
+  <br><br><br>
+  Large Example:
+  <br><br>
+  <a href="draw_binary_tree_large.png"><img src="draw_binary_tree_thumb.png"></img></a>
+  </div>
+</body>
+</html>
