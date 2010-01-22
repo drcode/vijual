@@ -2,6 +2,8 @@
   (:use clojure.contrib.math)
   (:use clojure.contrib.seq-utils))
 
+;;Maintained By Conrad Barski- Licensed under GPLV3
+
 ;; Common functions to all layout algorithms
 
 (defn half [x]

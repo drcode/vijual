@@ -1,11 +1,13 @@
 (ns vijual.graphical
-  (:use [vijual :only (shapes-height shapes-width center wrap layout-tree idtree dbg dbgv graph-to-shapes layout-graph)]
+  (:use [vijual :only (shapes-height shapes-width center wrap layout-tree idtree graph-to-shapes layout-graph half tree-to-shapes)]
         clojure.contrib.math)
   (:import (java.io File)
            (javax.imageio ImageIO)
            (java.awt Color)
            (java.awt.image BufferedImage)
            (vijual.*)))
+
+;;Maintained By Conrad Barski- Licensed under GPLV3
 
 (def image-wrap-threshold 20)
 
