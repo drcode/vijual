@@ -1,11 +1,10 @@
 (ns vijual.graphical
-  (:use [vijual :only (shapes-height shapes-width center wrap layout-tree idtree graph-to-shapes layout-graph half tree-to-shapes)]
+  (:use [vijual]
         clojure.contrib.math)
   (:import (java.io File)
            (javax.imageio ImageIO)
            (java.awt Color)
-           (java.awt.image BufferedImage)
-           (vijual.*)))
+           (java.awt.image BufferedImage)))
 
 ;;Maintained By Conrad Barski- Licensed under GPLV3
 

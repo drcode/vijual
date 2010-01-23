@@ -9,7 +9,7 @@
   <scm>
     <connection>scm:git:git://github.com/drcode/vijual.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/drcode/vijual.git</developerConnection>
-    <tag>3fdd469316898caa06479d79952cb220838f23b4</tag>
+    <tag>444646516bd9b181a63f05083e51c61dbee288d9</tag>
     <url>http://github.com/drcode/vijual</url>
   </scm>
   <repositories>
@@ -36,11 +36,6 @@
       <groupId>org.clojure</groupId>
       <artifactId>clojure-contrib</artifactId>
       <version>1.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>leiningen</groupId>
-      <artifactId>lein-swank</artifactId>
-      <version>1.1.0</version>
     </dependency>
   </dependencies>
 </project>
