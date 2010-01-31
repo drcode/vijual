@@ -9,10 +9,14 @@
   <scm>
     <connection>scm:git:git://github.com/drcode/vijual.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/drcode/vijual.git</developerConnection>
-    <tag>444646516bd9b181a63f05083e51c61dbee288d9</tag>
+    <tag>ba1f9a9a1e5e17b96de264ccf133538c8acf9c33</tag>
     <url>http://github.com/drcode/vijual</url>
   </scm>
   <repositories>
+    <repository>
+      <id>clojars</id>
+      <url>http://clojars.org/repo</url>
+    </repository>
     <repository>
       <id>central</id>
       <url>http://repo1.maven.org/maven2</url>
