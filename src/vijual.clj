@@ -10,6 +10,16 @@
 
 ;; Common functions to all layout algorithms
 
+(defmacro dbg [fun & body]
+  `(let [x# (~fun ~@body)]
+     (println ~(name fun) "=*" x# "*")
+     x#))
+
+(defmacro dbgv [nam var]
+  `(let [x# ~var]
+     (println ~nam "=*" x# "*")
+     x#))
+
 (defn half [x]
   (/ x 2))
 
@@ -147,6 +157,27 @@
 
 (defn vertical [dir]
   (#{:up :down} dir))
+
+(defn db
+  "Builds a graph database"
+  [edgelist nodemap directed?]
+  (let [edges (vec (map (fn [[a b] id]
+                          {:from a :to b :directed directed? :id id})
+                        edgelist
+                        (iterate inc 0)))
+        sources (group-by :from edges)
+        dests (group-by :to edges)]
+    {:edges edges 
+     :nodes (into {}
+                  (map (fn [node]
+                         [node {:text (or (nodemap node) node)
+                                :edges (concat (map (fn [{id :id}]
+                                                      {:pos :start :id id})
+                                                    (sources node))
+                                               (map (fn [{id :id}]
+                                                      {:pos :end :id id})
+                                                    (dests node)))}])
+                       (distinct (concat (apply concat edgelist) (keys nodemap)))))}))
 
 ;;Scan Functions- A "scan" is a run-length-encoded list of heights that are used to optimally calculate packing of tree and graphs. An example scan would be [[0 5] [7 10]] which would mean "The height is 5 for an x between 0 (inclusive) and 7 (exclusive). The height is 10 for any x greater than or equal to 7."
 
@@ -1017,6 +1048,10 @@
                                      vzigzags))]
     (vals marked)))
 
+;;Functions specific to DAGs
+
+;;currently only handles polytrees, not true DAGs
+
 ;;Functions specific to binary trees
 
 (defn line-info-btree 
@@ -1118,8 +1153,6 @@
 
 ;Graphical Routines
 
-;;Maintained By Conrad Barski- Licensed under GPLV3
-
 (def image-wrap-threshold 20)
 
 (def image-dim {:width-fn (fn [text]
@@ -1197,6 +1230,13 @@
   ([edges]
      (draw-directed-graph edges {})))
 
+(defn draw-acyclic-directed-graph
+  "Draws an acyclic undirected graph to the console. Requires a list of pairs representing the edges of the graph. Additionally, a separate map can be included containing node information mapped via the node ids in the edge list. An effort is made to have majority of 'arrows' in the graph move in a downward direction."
+  ([edges nodes]
+     (draw-shapes ascii-dim (integer-shapes (graph-to-shapes ascii-dim (layout-dag ascii-dim edges nodes)))))
+  ([edges]
+     (draw-acyclic-directed-graph edges {})))
+
 (defn draw-binary-tree
   "Draws a binary tree to the console. Nodes are in the form [text left right] where 'left' and 'right' are optional fields containing the children of this node."
   [btree]
@@ -1238,6 +1278,8 @@
 ;(draw-directed-graph [[:a :b] [:b :c] [:c :d] [:d :e] [:e :f] [:f :a]])
 
 ;(draw-directed-graph [["AFn" "Obj"] ["AFn" "IFn"] ["AFn" "Serializable"] ["AFunction" "AFn"] ["AFunction" "Comparator"] ["AFunction" "Fn"] ["AMapEntry" "APersistentVector"] ["AMapEntry" "IMapEntry"] ["APersistentMap" "AFn"] ["APersistentMap" "IPersistentMap"] ["APersistentMap" "Map"] ["APersistentSet" "AFn"] ["APersistentSet" "IPersistentSet"] ["APersistentSet" "Collection"] ["APersistentSet" "Set"] ["APersistentVector" "AFn"] ["APersistentVector" "IPersistentVector"] ["APersistentVector" "List"] ["APersistentVector" "RandomAccess"] ["ARef" "AReference"] ["ARef" "IRef"] ["AReference" "IReference"] ["ASeq" "Obj"] ["ASeq" "ISeq"] ["ASeq" "List"] ["Agent" "ARef"] ["ArraySeq" "ASeq"] ["ArraySeq" "IndexedSeq"] ["ArraySeq" "IReduce"] ["ArrayStream" "AFn"] ["Associative" "IPersistentCollection"] ["Atom" "ARef"] ["ConcurrentMap" "Map"] ["Cons" "ASeq"] ["Delay" "IDeref"] ["EnumerationSeq" "ASeq"] ["IFn" "Callable"] ["IFn" "Runnable"] ["IMapEntry" "Map$Entry"] ["IPersistentCollection" "Seqable"] ["IPersistentList" "Sequential"] ["IPersistentList" "IPersistentStack"] ["IPersistentMap" "Associative"] ["IPersistentSet" "IPersistentCollection"] ["IPersistentStack" "IPersistentCollection"] ["IPersistentVector" "Associative"] ["IPersistentVector" "Sequential"] ["IPersistentVector" "IPersistentStack"] ["IRef" "IDeref"] ["ISeq" "IPersistentCollection"] ["ISeq" "Sequential"] ["IndexedSeq" "ISeq"] ["IteratorSeq" "ASeq"] ["IteratorStream" "AFn"] ["Keyword" "IFn"] ["LazilyPersistentVector" "APersistentVector"] ["LazySeq" "Obj"] ["LazySeq" "ISeq"] ["LazySeq" "List"] ["List" "Collection"] ["MapEntry" "AMapEntry"] ["MultiFn" "AFn"] ["Namespace" "AReference"] ["Obj" "IObj"] ["Object$Future$IDeref" "IProxy"] ["Object$Future$IDeref" "IDeref"] ["Object$Future$IDeref" "Future"] ["PersistentArrayMap" "APersistentMap"] ["PersistentHashMap" "APersistentMap"] ["PersistentHashSet" "APersistentSet"] ["PersistentList" "ASeq"] ["PersistentList" "IPersistentList"] ["PersistentList" "IReduce"] ["PersistentList" "List"] ["PersistentQueue" "Obj"] ["PersistentQueue" "IPersistentList"] ["PersistentQueue" "Collection"] ["PersistentStructMap" "APersistentMap"] ["PersistentTreeMap" "APersistentMap"] ["PersistentTreeMap" "Sorted"] ["PersistentTreeSet" "APersistentSet"] ["PersistentTreeSet" "Sorted"] ["PersistentVector" "APersistentVector"] ["ProxyHandler" "InvocationHandler"] ["Range" "ASeq"] ["Range" "IReduce"] ["Ref" "ARef"] ["Ref" "IFn"] ["Ref" "IRef"] ["RestFn" "AFunction"] ["SeqEnumeration" "Enumeration"] ["SeqIterator" "Iterator"] ["Set" "Collection"] ["Stream" "Seqable"] ["Stream" "Sequential"] ["StringSeq" "ASeq"] ["StringSeq" "IndexedSeq"] ["Symbol" "AFn"] ["Symbol" "Serializable"] ["TransactionalHashMap" "ConcurrentMap"] ["Var" "ARef"] ["Var" "IFn"] ["Var" "IRef"] ["Var" "Settable"]])
+
+;(draw-acyclic-directed-graph [[:a :b] [:b :c] [:c :d] [:d :e] [:e :f] [:f :a]])
 
 ;(draw-binary-tree [1 [2 [3] [4]] [5]])
 

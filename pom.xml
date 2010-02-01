@@ -9,7 +9,7 @@
   <scm>
     <connection>scm:git:git://github.com/drcode/vijual.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/drcode/vijual.git</developerConnection>
-    <tag>ba1f9a9a1e5e17b96de264ccf133538c8acf9c33</tag>
+    <tag>4482882baf9fc657d09629b8235ceb10dfe64d32</tag>
     <url>http://github.com/drcode/vijual</url>
   </scm>
   <repositories>
