@@ -488,13 +488,13 @@
 (defn shuffle-nodes
   "Randomly swaps two nodes of the graph"
   [pos nodes]
-  (let [a (rand-elt nodes)
-        b (rand-elt nodes)
+  (let [a (rand-nth nodes)
+        b (rand-nth nodes)
         an (pos a)
         bn (pos b)]
     (merge pos 
-           {a (assoc an :x (bn :x) :y (bn :y))
-            b (assoc bn :x (an :x) :y (an :y))})))
+          {a (assoc an :x (bn :x) :y (bn :y))}
+          {b (assoc bn :x (an :x) :y (an :y))})))
 
 (defn anneal 
   "A naive annealing algorithm for initial layout of nodes in graphs. The current code is crude and very prone to getting stuck in local maxima. Best replaced with a genetic algorithm in the future."
