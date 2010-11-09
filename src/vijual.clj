@@ -1,6 +1,6 @@
 (ns vijual
   (:use clojure.contrib.math)
-  (:use clojure.contrib.seq-utils)
+  (:use [clojure.contrib.seq :only [positions]])
   (:import (java.io File)
            (javax.imageio ImageIO)
            (java.awt Color)
