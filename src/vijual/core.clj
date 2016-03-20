@@ -1,14 +1,20 @@
-(ns vijual
-  (:use clojure.contrib.math)
-  (:use clojure.contrib.seq-utils)
-  (:import (java.io File)
-           (javax.imageio ImageIO)
-           (java.awt Color)
-           (java.awt.image BufferedImage)))
+(ns vijual.core
+  (:require [clojure.math.numeric-tower :refer [floor abs ceil]])
+  (:import [java.io File]
+           [javax.imageio ImageIO]
+           [java.awt Color]
+           [java.awt.image BufferedImage]))
 
 ;;Maintained By Conrad Barski- Licensed under GPLV3
 
 ;; Common functions to all layout algorithms
+
+(defn positions
+  "Returns a lazy sequence containing the positions at which pred
+  is true for items in coll."
+  [pred coll]
+  (map first (filter (comp pred second) 
+                     (map-indexed vector coll))))
 
 (defn half [x]
   (/ x 2))
@@ -488,8 +494,8 @@
 (defn shuffle-nodes
   "Randomly swaps two nodes of the graph"
   [pos nodes]
-  (let [a (rand-elt nodes)
-        b (rand-elt nodes)
+  (let [a (rand-nth nodes)
+        b (rand-nth nodes)
         an (pos a)
         bn (pos b)]
     (merge pos 
@@ -751,7 +757,11 @@
                nodes))))
 
 (defn fix-leg-directions
-  "This function should be obsolete in the near future. It checks all lines making up the edges to make sure they are marked with the correct direction (up, down, left, right). In the future, the lines will instead be marked as 'horizontal' and 'vertical' instead, which will prevent any 'flips' in direction from happening."
+  "This function should be obsolete in the near future. It checks all lines
+  making up the edges to make sure they are marked with the correct direction
+  (up, down, left, right). In the future, the lines will instead be marked as
+  'horizontal' and 'vertical' instead, which will prevent any 'flips' in
+  direction from happening."
   [nodes]
   (into {}
         (map (fn [[key {:keys [links] :as node}]]
@@ -780,7 +790,10 @@
              nodes)))
 
 (defn vcompact
-  "This function is a monster and will probably be broken into smaller functions in the future. Its job is to pack the graph by pushing all nodes and lines upwards as much as possible. It also 'feathers out' all edges attaching to the same side of a single node, so that you can see separate attachment points for each."
+  "This function is a monster and will probably be broken into smaller functions in the future.
+  Its job is to pack the graph by pushing all nodes and lines upwards as much as possible.
+  It also 'feathers out' all edges attaching to the same side of a single node, so that you can
+  see separate attachment points for each."
   [{:keys [line-padding line-wid]} nodes]
   (let [side (get-side nodes)
         positions (pos-map nodes)
